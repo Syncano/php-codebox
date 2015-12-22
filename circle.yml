@@ -1,0 +1,21 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker build -t quay.io/syncano/php-codebox .
+
+test:
+  override:
+    -  docker run -it -v `pwd`/test.php:/tmp/test.php quay.io/syncano/php-codebox php5 /tmp/test.php
+
+deployment:
+  production:
+    branch:
+      - master
+    commands:
+      - sed -e "s|<REGISTRY>|$DOCKER_REGISTRY|g" -e "s|<EMAIL>|$DOCKER_EMAIL|g" -e "s|<AUTH>|$DOCKER_AUTH|g" < .dockercfg.template > ~/.dockercfg
+      - docker build -t quay.io/syncano/php-codebox .
+      - docker push quay.io/syncano/php-codebox
+
