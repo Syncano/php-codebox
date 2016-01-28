@@ -10,6 +10,6 @@ RUN chmod 1777 /tmp
 
 # create a special user to run code
 # user without root privileges greatly improves security
-RUN groupadd -r syncano && useradd -r -g syncano syncano
+RUN useradd syncano -d /tmp -s /bin/bash
 USER syncano
 
