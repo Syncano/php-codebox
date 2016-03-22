@@ -19,3 +19,4 @@ RUN apt-get update && apt-get install -qqy \
 # create a special user to run code
 # user without root privileges greatly improves security
 USER syncano
+WORKDIR /tmp
