@@ -1,15 +1,24 @@
 FROM ubuntu:trusty
 MAINTAINER "Syncano DevOps Team" <devops@syncano.com>
 
-RUN apt-get update
-RUN apt-get upgrade -y
+ENV LAST_REFRESHED 2016-03-25
+ENV SYNCANO_APIROOT https://api.syncano.io/
 
-RUN apt-get install -y php5 php5-cli php5-json
+RUN groupadd -r syncano && \
+    useradd -u 1000 -r -g syncano syncano -d /tmp -s /bin/bash && \
+    mkdir /home/syncano && \
+    chown -R syncano /home/syncano
 
+# enable everyone to use /tmp
 RUN chmod 1777 /tmp
+# -- CUT --
+
+RUN apt-get update && apt-get install -qqy \
+    php5 \
+    php5-cli \
+    php5-json
 
 # create a special user to run code
 # user without root privileges greatly improves security
-RUN useradd syncano -d /tmp -s /bin/bash
 USER syncano
-
+WORKDIR /tmp
