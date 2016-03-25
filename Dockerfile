@@ -11,14 +11,13 @@ RUN groupadd -r syncano && \
 
 # enable everyone to use /tmp
 RUN chmod 1777 /tmp
-# -- CUT --
+# -- CUT BEGIN --
 
 RUN apt-get update && apt-get install -qqy \
     php5 \
     php5-cli \
     php5-json
 
-# create a special user to run code
-# user without root privileges greatly improves security
+# -- CUT END --
 USER syncano
 WORKDIR /tmp
